@@ -21,10 +21,31 @@
   </head>
   <body>
       <script>
-			d3.csv('data/Vancouver.csv', function(error, data) {
-				(error) ? console.log(error) : console.log(data);
+			d3.select('body')
+				.style('background-color','#39f');
+			d3.csv('data/Vancouver.csv', function(data) {
+				//(error) ? console.log(error) : console.log(data);
+				console.log(data);
+				
+				d3.select('body')
+				//	.style('background-color','#39f')
+					.selectAll('p')
+					.data(data)
+					.enter()
+					.append('p').style('border','2px solid #fff').style('background-color', '#000')
+					.text(function(d, i) { console.log(d); return d.Public; });
+				var dataset = data;
+				d3.select("body").selectAll("p")
+    .data(dataset)
+    .enter()
+    .append("p")
+    .text("New paragraph!");
+				
 			});
-          
+
+
+
+			
       </script>
       
   </body>
