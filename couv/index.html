@@ -44,7 +44,7 @@
 		}
 
 		function swapSVGLayers(cb) {
-			cb();
+			cb();squares();
 			var rndEl, timer;
 			timer = setInterval(function() {
 				var rects = document.getElementsByTagName('rect');
@@ -53,7 +53,7 @@
 				
 				document.getElementsByTagName('svg')[0].removeChild(document.getElementsByTagName('rect')[rndEl]);
 			//	cb();
-			},10);
+			},100);
 		}
 	   
 			d3.select('body').style('background-color','#39f');
@@ -108,6 +108,8 @@
 					.style('r','40');
 					*/
 					//.text(function(d, i) { console.log(d); return d.Public; });
+					
+					/*
 				d3.select('svg')
 					.selectAll('circle')
 					.data(data)
@@ -124,6 +126,7 @@
 					.duration(2750)
 					.attr("r", 2)
 					.style("stroke-opacity", 1);
+					*/
 			});
 
 
