@@ -25,22 +25,29 @@
   <svg width="800" height="600" style="background-color: #fff;"></svg>
       <script>
 		var color = d3.scale.category20();
+		var color2 = d3.scale.category20b();
 		var dataset;
 		
 		function squares() {
 			d3.select('svg')
 			.selectAll("rect")
-			.data(dataset)
+			.data(dataset.reverse())
 			.enter()
 			.append("rect")
-			.attr("x", function(d) { return d['Total SF'] / 10;})
-			.attr("y", function(d) { return d['Total SF'] / 10;})
-			.attr("width", function(d) { return d['Close Price'] / 1000;})
-			.attr("height", function(d) { return d['Close Price'] / 1000;})
+			.attr("x", function(d) {  return (Math.random() * 800); })
+			.attr("y", function(d) {  return (Math.random() * 600); })
+			.attr("width", function(d) { return d['Total SF'] / 50;})
+			.attr("height", function(d) { return d['Total SF'] / 50;})
 			.attr("fill",function(d,i){return color(i);})
 			.transition()
-			.duration(function(d) { return ((Math.random() * 10) * 500) + 200})
-			.style('transform','scale(0.5,0.5)');
+			.duration(function(d) { return ((Math.random() * 30) * 500) + 200})
+			.style('transform','scale(0.5,0.5)')
+			.transition()
+			.duration(function(d) { return ((Math.random() * 30) * 500) + 200})
+			.attr("x", function(d) {  return (Math.random() * 700); })
+			.attr("y", function(d) {  return (Math.random() * 500); })
+			.attr("fill",function(d,i){return color2(Math.random() * i);})
+			.style('transform','scale(1.0,1.0)');
 		}
 
 		function swapSVGLayers(cb) {
@@ -51,83 +58,20 @@
 				console.log(rects.length);
 				rndEl = (Math.floor(Math.random() * rects.length));
 				
-				document.getElementsByTagName('svg')[0].removeChild(document.getElementsByTagName('rect')[rndEl]);
+				//document.getElementsByTagName('svg')[0].Child(document.getElementsByTagName('rect')[rndEl]);
 			//	cb();
 			},100);
 		}
 	   
-			d3.select('body').style('background-color','#39f');
+		d3.select('body').style('background-color','#39f');
 			
-			d3.csv('data/Vancouver.csv', function(data, error) {
-				(error) ? console.log(error) : console.log(data);
-				dataset = data;
-
-								
-			/*	
-				.selectAll("rect")
-   .data(data)
-   .enter()
-   .append("rect")
-   .attr("x", 0)
-   .attr("y", 0)
-   .attr("width", 20)
-   .attr("height", 100);
-				*/
-				
-
+		d3.csv('data/Vancouver.csv', function(data, error) {
+			(error) ? console.log(error) : console.log(data);
+			dataset = data;
 			squares();
-			
 			swapSVGLayers(squares);
-				/*
-				
-				.selectAll('rect')
-					.data(data)	
-					.enter()
-					.append('rect')
-					.attr("x", function(d){ 
-						return d['Total SF'];
-					})     //d['Total SF'] / 100;})
-					.attr("y", 10)//function(d){ return d['Total SF'] / 100;})
 
-					.style("height", 10)
-					.style("width", 10);
-					//.style("stroke-opacity", 1e-6)
-//					.style("stroke", '#000')
-	//				.style('fill','#f00')
-		//			.style("width", 3)
-				.transition()
-	//				.duration(750)
-	//				.attr("r", 2)
-			//		.style("stroke-opacity", 1);
-					
-					/*
-					style('width', function(d) {
-						console.log(d['Total SF'] / 10);
-						return (d['Total SF'] / 10);
-					})
-					.style('r','40');
-					*/
-					//.text(function(d, i) { console.log(d); return d.Public; });
-					
-					/*
-				d3.select('svg')
-					.selectAll('circle')
-					.data(data)
-					.enter()
-					.append('circle')
-					.attr("cx", function(d){ return d['Total SF'] / 10;})
-					.attr("cy", function(d){ return d['Total SF'] / 10;})
-					.attr("r", function(d){ return d['Total SF'] / 10;})
-					.style("fill", "none")
-					.style("stroke", "red")
-					.style("stroke-opacity", 1e-6)
-					.style("stroke-width", 3)
-					.transition()
-					.duration(2750)
-					.attr("r", 2)
-					.style("stroke-opacity", 1);
-					*/
-			});
+		});
 
 
       </script>
