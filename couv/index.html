@@ -16,31 +16,95 @@
             }
 
             h1 {font-size: 30px;}
-           
+           circle {
+			
+		   }
         </style>
   </head>
   <body>
+  <svg width="800" height="600" style="background-color: #fff;"></svg>
       <script>
+	  
+	   var color = d3.scale.category20();
 			d3.select('body')
 				.style('background-color','#39f');
 			d3.csv('data/Vancouver.csv', function(data) {
 				//(error) ? console.log(error) : console.log(data);
 				console.log(data);
 				
-				d3.select('body')
-				//	.style('background-color','#39f')
-					.selectAll('p')
+				d3.select('svg')
+			/*		.selectAll('circle')
 					.data(data)
 					.enter()
-					.append('p').style('border','2px solid #fff').style('background-color', '#000')
-					.text(function(d, i) { console.log(d); return d.Public; });
-				var dataset = data;
-				d3.select("body").selectAll("p")
-    .data(dataset)
-    .enter()
-    .append("p")
-    .text("New paragraph!");
+					.append('circle')
+					.attr("cx", function(d){ return d['Total SF'] / 10;})
+					.attr("cy", function(d){ return d['Total SF'] / 10;})
+					.attr("r", function(d){ return d['Total SF'] / 10;})
+					.style("fill", "none")
+					.style("stroke", "red")
+					.style("stroke-opacity", 1e-6)
+					.style("stroke-width", 3)
+					.transition()
+					.duration(750)
+					.attr("r", 2)
+					.style("stroke-opacity", 1);
+				*/				
+			/*	
+				.selectAll("rect")
+   .data(data)
+   .enter()
+   .append("rect")
+   .attr("x", 0)
+   .attr("y", 0)
+   .attr("width", 20)
+   .attr("height", 100);
+				*/
 				
+				
+				.selectAll("rect")
+   .data(data)
+   .enter()
+   .append("rect")
+   .attr("x", function(d) { return d['Total SF'] / 10;})
+   .attr("y", function(d) { return d['Total SF'] / 10;})
+   .attr("width", function(d) { return d['Close Price'] / 1000;})
+   .attr("height", function(d) { return d['Close Price'] / 1000;})
+   .attr("fill",function(d,i){return color(i);})
+   				.transition()
+				.duration(function(d) { return ((Math.random() * 10) * 500) + 200})
+				.style('transform','scale(0.5,0.5)');
+			
+				/*
+				
+				.selectAll('rect')
+					.data(data)
+					.enter()
+					.append('rect')
+					.attr("x", function(d){ 
+						return d['Total SF'];
+					})     //d['Total SF'] / 100;})
+					.attr("y", 10)//function(d){ return d['Total SF'] / 100;})
+
+					.style("height", 10)
+					.style("width", 10);
+					//.style("stroke-opacity", 1e-6)
+//					.style("stroke", '#000')
+	//				.style('fill','#f00')
+		//			.style("width", 3)
+				.transition()
+	//				.duration(750)
+	//				.attr("r", 2)
+			//		.style("stroke-opacity", 1);
+					
+					/*
+					style('width', function(d) {
+						console.log(d['Total SF'] / 10);
+						return (d['Total SF'] / 10);
+					})
+					.style('r','40');
+					*/
+					//.text(function(d, i) { console.log(d); return d.Public; });
+
 			});
 
 
