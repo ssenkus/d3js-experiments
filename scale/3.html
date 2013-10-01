@@ -28,6 +28,8 @@
             ];
             var padding = 50;
 
+
+
             var xScale = d3.scale.linear()
                     .domain([0, d3.max(dataset, function(d) {
                     return d[0];
@@ -46,7 +48,9 @@
                 })])
                     .range([2, 15]);
 
-
+//            var xAxis = d3.svg.axis()
+  //                  .scale(xScale)
+    //                .orient("bottom");
             //Create SVG element
             var svg = d3.select("body")
                     .append("svg")
@@ -64,9 +68,10 @@
                     .attr('cy', function(d) {
                 return yScale(d[1]);
             })
-.attr("r", function(d) {
-    return rScale(d[1]);
-}).attr('fill', '#f00');
+                    .attr("r", function(d) {
+                return rScale(d[1]);
+            }).attr('fill', '#f00');
+
             svg.selectAll('text')
                     .data(dataset)
                     .enter()
@@ -81,6 +86,15 @@
                 return (d[0]) + ',' + d[1];
             });
 
+
+
+      //      svg.append("g")
+        //            .call(xAxis);
+
+svg.append("g")
+    .call(d3.svg.axis()
+    .scale(xScale)
+    .orient("bottom"));
 
         </script>
 
