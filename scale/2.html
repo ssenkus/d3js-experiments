@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <title>Scale - D3.js</title>
+        <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?1.25.0"></script>
+        <link href='http://fonts.googleapis.com/css?family=Happy+Monkey' rel='stylesheet' type='text/css'>
+        <style type="text/css">
+
+            body {
+                background: #222;
+                color: #fff;
+                text-align: center;
+                font-family: 'Happy Monkey', cursive;
+            }
+
+        </style>
+    </head>
+    <body>
+
+        <script>
+            var w = 800, h = 600;
+            var color1 = d3.scale.category20();
+            var color2 = d3.scale.category20c();
+            var dataset = [[1,2],[3,4],[5,6],[7,8],[9,10]];
+            var datasetFlat = [50,82,47,18,29,91,12,35];
+            
+            var scale = d3.scale.linear()                
+                    .domain([100, 500])
+                    .range([10, 350]);
+            
+            console.log('scale(100)', scale(100));  //Returns 10
+            console.log('scale(450)', scale(450));  //Returns 180
+            console.log('scale(500)', scale(500));  //Returns 350
+
+            var coords = d3.max(dataset, function(d) {
+                return d[1]
+
+            });
+
+            console.log('coords', coords);
+            console.log('datasetFlat: ',d3.max( datasetFlat));
+   
+            //Create SVG element
+            var svg = d3.select("body")
+                    .append("svg")
+                    .attr("width", w)
+                    .attr("height", h)
+                    .style('background-color','#fff');
+
+        </script>
+
+    </body>
+</html>
