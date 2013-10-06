@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <title>Scale - D3.js</title>
+        <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?1.25.0"></script>
+        <link href='http://fonts.googleapis.com/css?family=Happy+Monkey' rel='stylesheet' type='text/css'>
+        <style type="text/css">
+
+            body {
+                background: #222;
+                color: #fff;
+                text-align: center;
+                font-family: 'Happy Monkey', cursive;
+            }
+            svg {
+                margin-top: 150px;
+                border-radius:50px;
+                
+            }
+            
+            .axis path,
+            .axis line {
+                fill: none;
+                stroke: black;
+                shape-rendering: crispEdges;
+            }
+
+            .axis text {
+                font-family: sans-serif;
+                font-size: 12px;
+                font-weight: bold;
+                fill: #707;
+            }
+
+        </style>
+    </head>
+    <body>
+
+        <script>
+
+
+
+           var w = 400,
+                h = 240;
+            var color1 = d3.scale.category20b();
+            var color2 = d3.scale.category20c();
+
+            var paddingX = 50;
+            var paddingY = 50;
+
+
+            //Create SVG element
+            var svg = d3.select("body")
+                .append("svg")
+                .attr("width", w)
+                .attr("height", h)
+                .style('background-color', '#000');
+
+
+            for (var i = 0; i <= w - 25; i = i + 5) {
+                svg.append("line")
+                    .attr("x1", 0)
+                    .attr("y1", i)
+                    .attr("x2", w)
+                    .attr("y2", 0)
+
+                    .style("stroke", color2(i))
+                    .style("stroke-width", 29)
+
+                    .transition()
+                    .duration(1000)
+                    .attr('y2', h)
+                    .transition()
+                    .delay(1000)
+                    .duration(1000)
+                    .attr("x1", w)
+                    .transition()
+                    .delay(2000)
+                    .duration(1000)
+                    .attr('x2', 0)
+                    .attr("y2", i)
+                    
+                    .transition()
+                    .delay(5000)
+                    .duration(1000)
+                    .style("stroke", color1(i))
+                    .style('opacity',0.75)
+                
+                
+                svg.append("line")
+                    .attr("x1", 0)
+                    .attr("y1", 0)
+                    .attr("x2", w)
+                    .attr("y2", i)
+                    .style("stroke", color1(i))
+                    .style("stroke-width", 5)
+                    .transition()
+                    .duration(1000)
+                    .attr('y2', 0)
+                    .transition()
+                    .delay(1500)
+                    .duration(1000)
+                    .attr("y2", i)
+                    .transition()
+                    .delay(3000)
+                    .duration(1000)
+                    .attr("y1", i)         
+                    .style('opacity', 0.8);
+           }
+
+        </script>
+
+    </body>
+</html>
