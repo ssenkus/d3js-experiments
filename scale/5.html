@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
         <title>Scale - D3.js</title>
-        <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?1.25.0"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/d3/3.3.3/d3.min.js"></script>
         <link href='http://fonts.googleapis.com/css?family=Happy+Monkey' rel='stylesheet' type='text/css'>
         <style type="text/css">
 
@@ -35,140 +35,69 @@
         <script>
             var w = 800, h = 600;
             var color1 = d3.scale.category20();
-            var color2 = d3.scale.category20c();
-            var dataset = [
-                [5, 20], [480, 90], [250, 50], [100, 33], [330, 95],
-                [410, 12], [500, 44], [25, 67], [85, 21], [220, 88]
-            ];
-                    var paddingX = 100;
-            var paddingY = 150;
+            var color2 = d3.scale.category20b();
+            var color3 = d3.scale.category20c();
+              
+            var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+                        11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
+            var paddingXSpacingRatio = 0.05; // 
+            var paddingYSpacingRatio = 0.05; // 
 
 
+            var xScale = d3.scale.ordinal()
+                    // HOW IT WORKS:
+                    // dataset.length = 20
+                    //d3.range(20) = [0,1,2,3,...,19]
+                    .domain(d3.range(dataset.length))
+                    .rangeRoundBands([0, w], paddingXSpacingRatio);
+            
+            var yScale = d3.scale.ordinal()
+                    .domain(d3.range(d3.max(dataset)+2))
+                    .rangeRoundBands([0, h], paddingYSpacingRatio);
 
-            var xScale = d3.scale.linear()
-                    .domain([0, d3.max(dataset, function(d) {
-                        return d[0];
-                        })
-                    ])
-                    .range([paddingX, w - paddingX]);
 
-            var yScale = d3.scale.linear()
-                    .domain([0, d3.max(dataset, function(d) {
-                        return d[1];
-                        })
-                    ])
-                    .range([h - paddingY, paddingY]);
-
-            var rScale = d3.scale.linear()
-                    .domain([0, d3.max(dataset, function(d) {
-                            return d[1];
-                        })
-                    ])
-                    .range([2, 6]);
-
-//            var xAxis = d3.svg.axis()
-            //                  .scale(xScale)
-            //                .orient("bottom");
-            //Create SVG element
             var svg = d3.select("body")
                     .append("svg")
                     .attr("width", w)
                     .attr("height", h)
-                    .style('background-color', '#fff');
+                    .style('background-color', '#fff')
+                    .on('click', function() { 
+                        d3.select(this)
+                                .transition()
+                                .duration(100)
+                                .style('background-color','#000')
+                                .transition()
+                                .delay(100)
+                                .duration(200)
+                                .style('background-color','#fff');
+                        });
 
 
-            for (var i = paddingX; i <= w - (paddingX+5); i = i + 5) {
-                svg.append("line")
-                    .attr("x1", i)
-                    .attr("y1", paddingY)
-                    .attr("x2", i)
-                    .attr("y2", h - paddingY)
-
-                    .style("stroke", '#000')
-                    .style("stroke-width", 0.2)
-
-            }
-            for (var i = 0; i <= 300; i = i + 4) {
-                svg.append("line")
-                    .attr("x1", paddingX)
-                    .attr("y1", paddingY + i)
-                    .attr("x2", w - paddingX)
-                    .attr("y2", paddingY + i)
-
-                    .style("stroke", '#000')
-                    .style("stroke-width", 0.2)
-
-
-            }
-
-
-            svg.selectAll('circle')
+            svg.selectAll("rect")
                     .data(dataset)
                     .enter()
-                    .append('circle')
-                    .attr('cx', function(d) {
-                        return xScale(d[0]);
+                    .append("rect")
+                    .attr({
+                        'x': function(d, i) {
+                                 return xScale(i);
+                        },
+                        'y': function(d) {
+                            // on top of svg
+                            //return 0;       
+                            // on bottom of svg
+                            return yScale.rangeBand() ;
+                         },
+                        'height':  function(d) {
+                            return yScale.rangeBand() * d;
+                        },
+                        'width': xScale.rangeBand(),
+                        'fill': '#f70'
                     })
-                    .attr('cy', function(d) {
-                        return yScale(d[1]);
-                    })
-                    .attr("r", function(d) {
-                        return rScale(d[1]);
-                    })
-                    .attr('fill', '#f00');
-
-            svg.selectAll('text')
-                    .data(dataset)
-                    .enter()
-                    .append('text')
-                    .attr('x', function(d) {
-                return xScale(d[0]);
-            })
-                    .attr('y', function(d) {
-                return yScale(d[1]);
-            })
-                    .text(function(d, i) {
-                return (d[0]) + ',' + d[1];
-            });
-
-
-
-            //      svg.append("g")
-            //            .call(xAxis);
-
-
-            
-            
-            var xAxis = d3.svg.axis()
-                    .scale(xScale)
-                    .orient("bottom")
-                    .ticks(20);
-            
-            var yAxis = d3.svg.axis()
-                .scale(yScale)
-                .orient("left")
-                .ticks(25);
+                    .on("click", function(d) {
+        //Do something mundane and annoying on click
+        d3.select(this).transition().duration(1400).attr('fill','#000')
+    });
         
-        
-            svg.append("g")
-                .attr('class','axis')
-                .attr("transform", "translate(0," + (h - paddingY ) + ")")
-                .call(xAxis);
-            
-
-
-                    
-            svg.append("g")
-                .attr('class','axis')
-                .attr("transform", "translate(" + paddingX + ", 0)")
-                .call(yAxis);
-            svg.append("g")
-                .attr('class','axis')
-                .attr("transform", "translate(" + paddingX + ", 0)")
-                .call(yAxis);
-
-
-
         </script>
 
     </body>
