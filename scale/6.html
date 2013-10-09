@@ -52,7 +52,7 @@
                     .rangeRoundBands([0, w], paddingXSpacingRatio);
             
             var yScale = d3.scale.ordinal()
-                    .domain(d3.range(d3.max(dataset)+2))
+                    .domain(d3.range(dataset.length))
                     .rangeRoundBands([0, h], paddingYSpacingRatio);
 
 
@@ -60,21 +60,12 @@
                     .append("svg")
                     .attr("width", w)
                     .attr("height", h)
-                    .style('background-color', '#adb')
-                    .on('click', function() { 
-                        d3.select(this)
-                                .transition()
-                                .duration(100)
-                                .style('background-color','#000')
-                                .transition()
-                                .delay(100)
-                                .duration(200)
-                                .style('background-color','#fff');
-                        });
+                    .style('background-color', '#00FF48')
+                    
 
 
             svg.selectAll("rect")
-                    .data(dataset)
+                    .data([])
                     .enter()
                     .append("rect")
                     .attr({
@@ -90,35 +81,12 @@
                         'height':  function(d) {
                             return yScale.rangeBand() * d;
                         },
-                        'width': xScale.rangeBand(),
-                        'fill': '#f70'
-                    })
-                    .on("click", function(d) {
-                        //Do something mundane and annoying on click
-                        d3.select(this).transition().duration(1400).attr('fill','#000')
-                    });
-        
-            svg.selectAll("text")
-                    .data(dataset)
-                    .enter()
-                    .append("text")
-                    .attr({
-                        'x': function(d, i) {
-                                 return xScale(i) + xScale.rangeBand() / 2;
+                        'width': function(d,i) { 
+                            return xScale.rangeBand();
                         },
-                        'y': function(d) {
-                            // on top of svg
-                            //return 0;       
-                            // on bottom of svg
-                            return yScale.rangeBand() * d ;
-                         },
-                        'fill': '#fff',
-                        'font-size': '',
-                        'font-family': 'sans-serif',
-                        'font-weight': 900,
-                        'text-anchor': 'middle'
-                    }).text(function(d) { return d; });
-        
+                        'fill': function(d,i) { return i% 2 === 0 ? '#f70': '#000';}
+                    });
+
         
         
         
